@@ -6,7 +6,7 @@
 
 <title>Vue源码探析——数据如何变视图？ | Gridea</title>
 
-<link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611676764482">
+<link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611677031752">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cyj20142932.github.io/styles/main.css">
@@ -77,7 +77,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1611676764482" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1611677031752" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -98,7 +98,7 @@
                     
                 </div>
                 <div class="post-content">
-                    <p>历史上开发网页页面的方式有很多，从最开始的纯DOM操作将数据动态变为视图，到有段时期的数组join方式间接转换，到es6的模板字符串，再到后来的模板引擎渲染页面，不同的时期使用不同的方式，到目前为止，模板引擎的方式显然更加优雅！下面我们以一组结构为例，看看使用这几种方式如何实现同一个效果！</p>
+                    <p>历史上开发网页页面的方式有很多，从最开始的纯DOM操作将数据动态变为视图，到有段时期的数组join方式（笔者其实没见过）间接转换，到es6的模板字符串，再到后来的模板引擎渲染页面，不同的时期使用不同的方式，到目前为止，模板引擎的方式显然更加优雅！下面我们以一组结构为例，看看使用这几种方式如何实现同一个效果！</p>
 <!-- more -->
 <h2 id="最终结果页面的html代码">最终结果页面的html代码</h2>
 <pre><code>&lt;ul id=&quot;list&quot;&gt;
@@ -173,6 +173,7 @@
             uEl.append(liEl);
         }
 </code></pre>
+<p>以上写法不是唯一，只是为了展示纯DOM的方式，可以看到，这种方式是非常麻烦的，通过纯粹的dom方式是最底层的方式，但是在现在来看，这种方式确实过于繁琐</p>
 
                 </div>
             </article>
