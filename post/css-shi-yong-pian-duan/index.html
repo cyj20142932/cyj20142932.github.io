@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>关于 | Gridea</title>
+<title>CSS实用片段 | Gridea</title>
 
 <link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611657880901">
 
@@ -89,27 +89,215 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    关于
+                    CSS实用片段
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2019-01-25 ·
+                        · 2021-01-26 ·
                     </time>
+                    
+                        <a href="https://cyj20142932.github.io/tag/css/" class="post-tags">
+                            # CSS
+                        </a>
                     
                 </div>
                 <div class="post-content">
-                    <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<h2 id="联系我呀">📬 联系我呀</h2>
+                    <h2 id="这是css浏览器重置的基本和常见的css代码段">这是CSS浏览器重置的基本和常见的CSS代码段</h2>
+<pre><code>html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+     margin: 0;
+     padding: 0;
+     border: 0;
+     font-size: 100%;
+     font: inherit;
+     vertical-align: baseline;
+     outline: none;
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     box-sizing: border-box;
+}
+ html {
+     height: 101%;
+}
+ body {
+     font-size: 62.5%;
+     line-height: 1;
+     font-family: Arial, Tahoma, sans-serif;
+}
+ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+     display: block;
+}
+ ol, ul {
+     list-style: none;
+}
+ blockquote, q {
+     quotes: none;
+}
+ blockquote:before, blockquote:after, q:before, q:after {
+     content: '';
+     content: none;
+}
+ strong {
+     font-weight: bold;
+}
+ table {
+     border-collapse: collapse;
+     border-spacing: 0;
+}
+ img {
+     border: 0;
+     max-width: 100%;
+}
+ p {
+     font-size: 1.2em;
+     line-height: 1.0em;
+     color: #333;
+}
+</code></pre>
+<h2 id="跨浏览器透明度设置">跨浏览器透明度设置</h2>
+<pre><code>.transparent {    
+     -ms-filter: &quot;progid:DXImageTransform.Microsoft.Alpha(Opacity=50)&quot;;/* IE 8 */    
+     filter: alpha(opacity=50); /* IE 5-7 */    
+     -moz-opacity: 0.5;/* Netscape */    
+     -khtml-opacity: 0.5; /* Safari 1.x */   
+     opacity: 0.5;  /* Good browsers */
+}
+常规媒体查询
+/* Smartphones (portrait and landscape) ----------- */
+ @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+   
+}
+/* Smartphones (landscape) ----------- */
+ @media only screen and (min-width : 321px) {
+   
+}
+/* Smartphones (portrait) ----------- */
+ @media only screen and (max-width : 320px) {
+    
+}
+/* iPads (portrait and landscape) ----------- */
+ @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    
+}
+/* iPads (landscape) ----------- */
+ @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+    
+}
+/* iPads (portrait) ----------- */
+ @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+    
+}
+/* Desktops and laptops ----------- */
+ @media only screen and (min-width : 1224px) {
+   
+}
+/* Large screens ----------- */
+ @media only screen and (min-width : 1824px) {
+    
+}
+/* iPhone 4 ----------- */
+ @media only screen and (-webkit-min-device-pixel-ratio:1.5), only screen and (min-device-pixel-ratio:1.5) {
+   
+}
+</code></pre>
+<h2 id="自定义选中文本">自定义选中文本</h2>
+<pre><code>::selection {
+     background: #51a351;
+}
+ ::-moz-selection {
+     background: #51a351;
+}
+ ::-webkit-selection {
+     background: #51a351;
+}
+</code></pre>
+<h2 id="带css3的全屏背景">带CSS3的全屏背景</h2>
+<pre><code>html {
+     background: url('images/bg.jpg') no-repeat center center fixed;
+     -webkit-background-size: cover;
+     -moz-background-size: cover;
+     -o-background-size: cover;
+     background-size: cover;
+}
+</code></pre>
+<h2 id="强制垂直滚动条">强制垂直滚动条</h2>
+<pre><code>html {
+     height: 101% 
+}
+</code></pre>
+<h2 id="文本首字母大写">文本首字母大写</h2>
+<pre><code>p:first-letter {
+     display: block;
+     margin: 4px 0 0 4px;
+     float: left;
+     color: #ff3366;
+     font-size: 5.3em;
+     font-family: Georgia, Times New Roman, serif;
+}
+</code></pre>
+<h2 id="内外阴影">内外阴影</h2>
+<pre><code>#mydiv {
+     -moz-box-shadow: inset 2px 0 4px #000;
+     -webkit-box-shadow: inset 2px 0 4px #000;
+     box-shadow: inset 2px 0 4px #000;
+}
+#mydiv {
+     -webkit-box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.52);
+     -moz-box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.52);
+     box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.52);
+}
+</code></pre>
+<h2 id="语音气泡">语音气泡</h2>
+<pre><code>.speech-bubble {
+    position: relative;
+    background: #00aabb;
+    border-radius: .4em;
+}
+ 
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 30px solid transparent;
+    border-top-color: #00aabb;
+    border-bottom: 0;
+    border-left: 0;
+    margin-left: -15px;
+    margin-bottom: -30px;
+}
+</code></pre>
+<h2 id="自定义输入样式">自定义输入样式</h2>
+<pre><code>input[type=text], textarea {
+     -webkit-transition: all 0.30s ease-in-out;
+     -moz-transition: all 0.30s ease-in-out;
+     -ms-transition: all 0.30s ease-in-out;
+     -o-transition: all 0.30s ease-in-out;
+     outline: none;
+     padding: 3px 0px 3px 3px;
+     margin: 5px 1px 3px 0px;
+     border: 1px solid #ddd;
+}
+ input[type=text]:focus, textarea:focus {
+     box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+     padding: 3px 0px 3px 3px;
+     margin: 5px 1px 3px 0px;
+     border: 1px solid rgba(81, 203, 238, 1);
+}
+</code></pre>
 
                 </div>
             </article>
         </div>
 
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://cyj20142932.github.io/post/hello-gridea/" class="post-title gt-a-link">
+                    Gridea博客客户端
+                </a>
+            </div>
         
 
         
