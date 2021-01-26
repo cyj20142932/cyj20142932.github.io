@@ -1,11 +1,10 @@
 <html>
-
 <head>
     <meta charset="utf-8"/>
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>友情链接 - Gridea</title>
+<title>Vue源码探析——数据如何变视图？ | Gridea</title>
 
 <link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611676764482">
 
@@ -26,12 +25,11 @@
 
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
 </head>
-
 <body>
 <div class="main gt-bg-theme-color-first">
-        <div class="main-content">
-            <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg">
     <div class="navbar-brand">
         <img class="user-avatar" src="/images/avatar.png" alt="头像">
         <div class="site-name gt-c-content-color-first">
@@ -87,38 +85,113 @@
     </div>
 </nav>
 
-            <div class="post-container">
-                <div class="post-detail">
-                    <article>
-                        <!-- <div class="post-content-wrapper"> -->
-                            <div class="post-content">
-                                <div class="friends-desc">
-                                    
-                                </div>
-                                <h3 id="linklist">友链列表</h3>
-                                
-                                    
-                                        <div class="friend-box">
-                                            <img class="friend-avatar" src="">
-                                            <div class="flink-info">
-                                                
-                                                        <a class="gt-c-content-color-first" href="" target="_blank"></a>
-                                                        
-                                                <br />
-                                                <div class="flink-info-desc gt-c-content-color-first">
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    
-                                
-                            </div>
-                        <!-- </div> -->
-                    </article>
-                </div>
-                
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Vue源码探析——数据如何变视图？
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-01-26 ·
+                    </time>
                     
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+                </div>
+                <div class="post-content">
+                    <p>历史上开发网页页面的方式有很多，从最开始的纯DOM操作将数据动态变为视图，到有段时期的数组join方式间接转换，到es6的模板字符串，再到后来的模板引擎渲染页面，不同的时期使用不同的方式，到目前为止，模板引擎的方式显然更加优雅！下面我们以一组结构为例，看看使用这几种方式如何实现同一个效果！</p>
+<!-- more -->
+<h2 id="最终结果页面的html代码">最终结果页面的html代码</h2>
+<pre><code>&lt;ul id=&quot;list&quot;&gt;
+        &lt;li&gt;
+            &lt;div class=&quot;hd&quot;&gt;小明的基本信息&lt;/div&gt;
+            &lt;div class=&quot;bd&quot;&gt;
+                &lt;p&gt;姓名：小明&lt;/p&gt;
+                &lt;p&gt;年龄：20&lt;/p&gt;
+                &lt;p&gt;性别：男&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;div class=&quot;hd&quot;&gt;小红的基本信息&lt;/div&gt;
+            &lt;div class=&quot;bd&quot;&gt;
+                &lt;p&gt;姓名：小红&lt;/p&gt;
+                &lt;p&gt;年龄：21&lt;/p&gt;
+                &lt;p&gt;性别：女&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+            &lt;div class=&quot;hd&quot;&gt;小张的基本信息&lt;/div&gt;
+            &lt;div class=&quot;bd&quot;&gt;
+                &lt;p&gt;姓名：小张&lt;/p&gt;
+                &lt;p&gt;年龄：23&lt;/p&gt;
+                &lt;p&gt;性别：男&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+</code></pre>
+<h2 id="1-纯dom方式实现">1、纯DOM方式实现</h2>
+<pre><code>const dataItems = [
+            {
+                name: &quot;小明&quot;,
+                age: 20,
+                sex: &quot;男&quot;,
+            },
+            {
+                name: &quot;小红&quot;,
+                age: 21,
+                sex: &quot;女&quot;,
+            },
+            {
+                name: &quot;小张&quot;,
+                age: 23,
+                sex: &quot;男&quot;,
+            },
+        ];
+        const uEl = document.getElementById(&quot;list&quot;);
+
+        for (const item of dataItems) {
+            //创建一个li标签
+            let liEl = document.createElement(&quot;li&quot;);
+            //liEl下面有两个div，因此需要创建两个div标签
+            let divHd = document.createElement(&quot;div&quot;);
+            divHd.innerText = item.name + &quot;的基本信息&quot;;
+            //divHd需要将divHd append到li上
+            liEl.append(divHd);
+            let divBd = document.createElement(&quot;div&quot;);
+            //div下还有三个p标签
+            let p1 = document.createElement(&quot;p&quot;);
+            p1.innerText = &quot;姓名：&quot; + item.name;
+            divBd.append(p1);
+            let p2 = document.createElement(&quot;p&quot;);
+            p2.innerText = &quot;年龄：&quot; + item.age;
+            divBd.append(p2);
+            let p3 = document.createElement(&quot;p&quot;);
+            p3.innerText = &quot;性别：&quot; + item.sex;
+            divBd.append(p3);
+            //需要将divBd append到li上
+            liEl.append(divBd);
+            //最后liEl需要append到uEl节点上，完成上树
+            uEl.append(liEl);
+        }
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://cyj20142932.github.io/post/css-shi-yong-pian-duan/" class="post-title gt-a-link">
+                    CSS实用片段
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
 <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 <script>
     // md5.min.js
@@ -161,15 +234,14 @@
 
 </script>
 
-                    
+            
 
-                    
-                
-            </div>
+            
+        
 
+        
 
-
-            <div class="site-footer gt-c-content-color-first">
+        <div class="site-footer gt-c-content-color-first">
     <div class="slogan gt-c-content-color-first">温故而知新</div>
     <div class="social-container">
         
@@ -203,8 +275,7 @@
   hljs.initHighlightingOnLoad()
 </script>
 
-        </div>
     </div>
+</div>
 </body>
-
 </html>
