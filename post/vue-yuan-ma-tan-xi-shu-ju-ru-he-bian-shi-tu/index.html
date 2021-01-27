@@ -6,7 +6,7 @@
 
 <title>Vue源码探析——数据如何变视图？ | Moon</title>
 
-<link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611746272037">
+<link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611747280593">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cyj20142932.github.io/styles/main.css">
@@ -77,7 +77,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1611746272037" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1611747280593" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -142,7 +142,7 @@
     &lt;/ul&gt;
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1611746265772.png" alt="" loading="lazy"></figure>
-<h2 id="1-纯dom方式实现">1、纯DOM方式实现</h2>
+<h3 id="公用测试数据">公用测试数据</h3>
 <pre><code>const dataItems = [
             {
                 name: &quot;小明&quot;,
@@ -160,6 +160,9 @@
                 sex: &quot;男&quot;,
             },
         ];
+</code></pre>
+<h2 id="1-纯dom方式实现">1、纯DOM方式实现</h2>
+<pre><code>
         const uEl = document.getElementById(&quot;list&quot;);
 
         for (const item of dataItems) {
@@ -188,6 +191,40 @@
         }
 </code></pre>
 <p>以上写法不是唯一，只是为了展示纯DOM的方式，可以看到，这种方式是非常麻烦的，通过纯粹的dom方式是最底层的方式，但是在现在来看，这种方式确实过于繁琐</p>
+<h2 id="2-数组join法确实没听说过也没用过">2、数组Join法（确实没听说过也没用过）</h2>
+<p>数组join法据说是为了解决无法换行字符串（es6之前没有模板字符串）而被人们想出来的一种另类的方法，说白了实际上就是为了让代码看上去更加有结构，据说是曾经前端必回知识，下面我们看看代码：</p>
+<pre><code>for (const item of dataItems) {
+            const str = [
+                '&lt;li&gt;',
+                '    &lt;div class=&quot;hd&quot;&gt;' + item.name + '的基本信息&lt;/div&gt;',
+                '    &lt;div class=&quot;bd&quot;&gt;',
+                '        &lt;p&gt;姓名：' + item.name + '&lt;/p&gt;',
+                '        &lt;p&gt;年龄：' + item.age + '&lt;/p&gt;',
+                '        &lt;p&gt;性别：' + item.sex + '&lt;/p&gt;',
+                '    &lt;/div&gt;',
+                '&lt;/li&gt;',
+            ].join('')
+            uEl.innerHTML += str;
+        }
+</code></pre>
+<h2 id="3-es6模板字符串方式">3、es6模板字符串方式</h2>
+<p>来到es6之后字符串就变得简单了，也就是模板字符串（反引号方法）可以换行来写,就算是现在，在很多场合也是很有用的，并且很多时候用起来非常的方便。</p>
+<pre><code>const uEl = document.getElementById(&quot;list&quot;);
+
+        for (const item of dataItems) {
+
+            let str = `
+            &lt;li&gt;
+                &lt;div class=&quot;hd&quot;&gt;${item.name}的基本信息&lt;/div&gt;
+                &lt;div class=&quot;bd&quot;&gt;
+                    &lt;p&gt;姓名：${item.name}&lt;/p&gt;
+                    &lt;p&gt;年龄：${item.age}&lt;/p&gt;
+                    &lt;p&gt;性别：${item.sex}&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;`
+            uEl.innerHTML += str;
+        }
+</code></pre>
 
                 </div>
             </article>
