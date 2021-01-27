@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>关于 | Moon</title>
+<title>Vue源码探析——mustache模板引擎的实现机理！ | Moon</title>
 
 <link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611750343610">
 
@@ -89,27 +89,48 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    关于
+                    Vue源码探析——mustache模板引擎的实现机理！
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2019-01-25 ·
+                        · 2021-01-27 ·
                     </time>
                     
                 </div>
                 <div class="post-content">
-                    <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<h2 id="联系我呀">📬 联系我呀</h2>
+                    <p>为了更好地理解Vue等其它类似库的实现原理，那么我们则需要弄懂模板引擎的底层机理，必须从最基础的模板引擎开始，才能更加透彻的弄懂Vue!</p>
+<!-- more -->
+<p>在正式的探究mustache的实现机理之前，我们需要先使用正则表达式的方式来模拟一个简易的模板引擎，或者说这不能成为引擎，只能说是一种字符串替换能力，用来实现简单地数据到视图的转换！</p>
+<h2 id="正则表达式实现一个简单地字符串处理能力">正则表达式实现一个简单地字符串处理能力</h2>
+<p>这里就引用课程中的实例了，也比较简单，容易理解</p>
+<pre><code>//正则方式实现字符串内容的替换
+        const templateStr = '&lt;h1&gt;我买了一个{{thing}}，好{{mood}}&lt;/h1&gt;';
+        const data = {
+            thing: &quot;华为手机&quot;,
+            mood: &quot;高兴&quot;
+        }
+
+        const newStr = templateStr.replace(/\{\{(\w+)\}\}/g, function (finedStr, str)         {
+            console.log(arguments);
+            return data[str]
+        })
+
+        console.log(newStr);
+</code></pre>
+<p>一下就是效果，通过replace的方式function回调的方式，将某些内容进行替换和提取，</p>
+<figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1611750283850.png" alt="" loading="lazy"></figure>
 
                 </div>
             </article>
         </div>
 
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-shu-ju-ru-he-bian-shi-tu/" class="post-title gt-a-link">
+                    Vue源码探析——数据如何变视图？
+                </a>
+            </div>
         
 
         
