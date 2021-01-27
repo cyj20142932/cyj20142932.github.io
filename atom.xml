@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cyj20142932.github.io</id>
     <title>Moon</title>
-    <updated>2021-01-27T11:34:42.469Z</updated>
+    <updated>2021-01-27T11:38:37.800Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://cyj20142932.github.io"/>
     <link rel="self" href="https://cyj20142932.github.io/atom.xml"/>
@@ -17,10 +17,10 @@
         </link>
         <updated>2021-01-26T15:25:48.000Z</updated>
         <summary type="html"><![CDATA[<p>历史上开发网页页面的方式有很多，从最开始的纯DOM操作将数据动态变为视图，到有段时期的数组join方式（笔者其实没见过）间接转换，到es6的模板字符串，再到后来的模板引擎渲染页面，不同的时期使用不同的方式，到目前为止，模板引擎的方式显然更加优雅！下面我们以一组结构为例，看看使用这几种方式如何实现同一个效果！</p>
-<p>（笔记课程来源）https://www.bilibili.com/video/BV1EV411h79m</p>
+<p>（笔记课程来源）[https://www.bilibili.com/video/BV1EV411h79m]</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>历史上开发网页页面的方式有很多，从最开始的纯DOM操作将数据动态变为视图，到有段时期的数组join方式（笔者其实没见过）间接转换，到es6的模板字符串，再到后来的模板引擎渲染页面，不同的时期使用不同的方式，到目前为止，模板引擎的方式显然更加优雅！下面我们以一组结构为例，看看使用这几种方式如何实现同一个效果！</p>
-<p>（笔记课程来源）https://www.bilibili.com/video/BV1EV411h79m</p>
+<p>（笔记课程来源）[https://www.bilibili.com/video/BV1EV411h79m]</p>
 ]]></content>
     </entry>
     <entry>
