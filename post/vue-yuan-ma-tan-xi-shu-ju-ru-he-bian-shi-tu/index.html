@@ -6,7 +6,7 @@
 
 <title>Vue源码探析——数据如何变视图？ | Moon</title>
 
-<link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611747515036">
+<link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611748055973">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cyj20142932.github.io/styles/main.css">
@@ -77,7 +77,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1611747515036" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1611748055973" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -226,8 +226,28 @@
         }
 </code></pre>
 <h2 id="4-模板引擎的方式">4、模板引擎的方式</h2>
-<p>模板引擎，我们依据课程，采用的是mustache模板引擎的方式来实现同样的效果<br>
+<p>模板引擎，我们依据课程，采用的是mustache模板引擎的方式来实现同样的效果,mustache是最早的html模板引擎，它的出现是极具创造性的<br>
 开源地址：[https://github.com/janl/mustache.js/]</p>
+<pre><code>&lt;script src=&quot;https://cdn.bootcdn.net/ajax/libs/mustache.js/4.1.0/mustache.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script id=&quot;template&quot; type=&quot;x-tmpl-mustache&quot;&gt;
+            {{#arr}}
+            &lt;li&gt;
+                &lt;div class=&quot;hd&quot;&gt;{{ name }}的基本信息&lt;/div&gt;
+                &lt;div class=&quot;bd&quot;&gt;
+                    &lt;p&gt;姓名：{{ name }}&lt;/p&gt;
+                    &lt;p&gt;年龄：{{ age }}&lt;/p&gt;
+                    &lt;p&gt;性别：{{ sex }}&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            {{/arr}}
+        &lt;/script&gt;
+    &lt;script&gt;
+        var template = document.getElementById('template').innerHTML;
+        var rendered = Mustache.render(template, { arr: dataItems });
+        document.getElementById('list').innerHTML = rendered;
+    &lt;/script&gt;
+</code></pre>
+<p>从代码可以看出，虽然代码量不是最少的，但是其思想确实最具创造性的，通过模板的方式，结构更加清晰，让数据更加容易的生成视图</p>
 
                 </div>
             </article>
