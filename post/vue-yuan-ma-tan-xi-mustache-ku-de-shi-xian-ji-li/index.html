@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>Vue源码探析——数据如何变视图？ | Moon</title>
+<title>Vue源码探析——mustache库的实现机理！ | Moon</title>
 
 <link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611754486109">
 
@@ -89,12 +89,16 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Vue源码探析——数据如何变视图？
+                    Vue源码探析——mustache库的实现机理！
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2021-01-26 ·
+                        · 2021-01-27 ·
                     </time>
+                    
+                        <a href="https://cyj20142932.github.io/tag/mustache/" class="post-tags">
+                            # mustache
+                        </a>
                     
                         <a href="https://cyj20142932.github.io/tag/vue-yuan-ma/" class="post-tags">
                             # vue源码
@@ -110,145 +114,10 @@
                     
                 </div>
                 <div class="post-content">
-                    <p>历史上开发网页页面的方式有很多，从最开始的纯DOM操作将数据动态变为视图，到有段时期的数组join方式（笔者其实没见过）间接转换，到es6的模板字符串，再到后来的模板引擎渲染页面，不同的时期使用不同的方式，到目前为止，模板引擎的方式显然更加优雅！下面我们以一组结构为例，看看使用这几种方式如何实现同一个效果！</p>
-<p>（笔记课程来源）[https://www.bilibili.com/video/BV1EV411h79m]</p>
+                    <p>mustache作为模板引擎的开山鼻祖，我们有必要从机理上就弄懂它，毕竟诸如Vue等库也都是有借鉴它的，因此，弄回了mustache之后再去理解vue则要简单地多！</p>
 <!-- more -->
-<h2 id="最终结果页面的html代码">最终结果页面的html代码</h2>
-<pre><code>&lt;ul id=&quot;list&quot;&gt;
-        &lt;li&gt;
-            &lt;div class=&quot;hd&quot;&gt;小明的基本信息&lt;/div&gt;
-            &lt;div class=&quot;bd&quot;&gt;
-                &lt;p&gt;姓名：小明&lt;/p&gt;
-                &lt;p&gt;年龄：20&lt;/p&gt;
-                &lt;p&gt;性别：男&lt;/p&gt;
-            &lt;/div&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-            &lt;div class=&quot;hd&quot;&gt;小红的基本信息&lt;/div&gt;
-            &lt;div class=&quot;bd&quot;&gt;
-                &lt;p&gt;姓名：小红&lt;/p&gt;
-                &lt;p&gt;年龄：21&lt;/p&gt;
-                &lt;p&gt;性别：女&lt;/p&gt;
-            &lt;/div&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-            &lt;div class=&quot;hd&quot;&gt;小张的基本信息&lt;/div&gt;
-            &lt;div class=&quot;bd&quot;&gt;
-                &lt;p&gt;姓名：小张&lt;/p&gt;
-                &lt;p&gt;年龄：23&lt;/p&gt;
-                &lt;p&gt;性别：男&lt;/p&gt;
-            &lt;/div&gt;
-        &lt;/li&gt;
-    &lt;/ul&gt;
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1611746265772.png" alt="" loading="lazy"></figure>
-<h3 id="公用测试数据">公用测试数据</h3>
-<pre><code>const dataItems = [
-            {
-                name: &quot;小明&quot;,
-                age: 20,
-                sex: &quot;男&quot;,
-            },
-            {
-                name: &quot;小红&quot;,
-                age: 21,
-                sex: &quot;女&quot;,
-            },
-            {
-                name: &quot;小张&quot;,
-                age: 23,
-                sex: &quot;男&quot;,
-            },
-        ];
-</code></pre>
-<p>下面我们就以这四种方式来实现同样的需求</p>
-<h2 id="1-纯dom方式实现">1、纯DOM方式实现</h2>
-<pre><code>
-        const uEl = document.getElementById(&quot;list&quot;);
-
-        for (const item of dataItems) {
-            //创建一个li标签
-            let liEl = document.createElement(&quot;li&quot;);
-            //liEl下面有两个div，因此需要创建两个div标签
-            let divHd = document.createElement(&quot;div&quot;);
-            divHd.innerText = item.name + &quot;的基本信息&quot;;
-            //divHd需要将divHd append到li上
-            liEl.append(divHd);
-            let divBd = document.createElement(&quot;div&quot;);
-            //div下还有三个p标签
-            let p1 = document.createElement(&quot;p&quot;);
-            p1.innerText = &quot;姓名：&quot; + item.name;
-            divBd.append(p1);
-            let p2 = document.createElement(&quot;p&quot;);
-            p2.innerText = &quot;年龄：&quot; + item.age;
-            divBd.append(p2);
-            let p3 = document.createElement(&quot;p&quot;);
-            p3.innerText = &quot;性别：&quot; + item.sex;
-            divBd.append(p3);
-            //需要将divBd append到li上
-            liEl.append(divBd);
-            //最后liEl需要append到uEl节点上，完成上树
-            uEl.append(liEl);
-        }
-</code></pre>
-<p>以上写法不是唯一，只是为了展示纯DOM的方式，可以看到，这种方式是非常麻烦的，通过纯粹的dom方式是最底层的方式，但是在现在来看，这种方式确实过于繁琐</p>
-<h2 id="2-数组join法确实没听说过也没用过">2、数组Join法（确实没听说过也没用过）</h2>
-<p>数组join法据说是为了解决无法换行字符串（es6之前没有模板字符串）而被人们想出来的一种另类的方法，说白了实际上就是为了让代码看上去更加有结构，据说是曾经前端必回知识，下面我们看看代码：</p>
-<pre><code>for (const item of dataItems) {
-            const str = [
-                '&lt;li&gt;',
-                '    &lt;div class=&quot;hd&quot;&gt;' + item.name + '的基本信息&lt;/div&gt;',
-                '    &lt;div class=&quot;bd&quot;&gt;',
-                '        &lt;p&gt;姓名：' + item.name + '&lt;/p&gt;',
-                '        &lt;p&gt;年龄：' + item.age + '&lt;/p&gt;',
-                '        &lt;p&gt;性别：' + item.sex + '&lt;/p&gt;',
-                '    &lt;/div&gt;',
-                '&lt;/li&gt;',
-            ].join('')
-            uEl.innerHTML += str;
-        }
-</code></pre>
-<h2 id="3-es6模板字符串方式">3、es6模板字符串方式</h2>
-<p>来到es6之后字符串就变得简单了，也就是模板字符串（反引号方法）可以换行来写,就算是现在，在很多场合也是很有用的，并且很多时候用起来非常的方便。</p>
-<pre><code>const uEl = document.getElementById(&quot;list&quot;);
-
-        for (const item of dataItems) {
-
-            let str = `
-            &lt;li&gt;
-                &lt;div class=&quot;hd&quot;&gt;${item.name}的基本信息&lt;/div&gt;
-                &lt;div class=&quot;bd&quot;&gt;
-                    &lt;p&gt;姓名：${item.name}&lt;/p&gt;
-                    &lt;p&gt;年龄：${item.age}&lt;/p&gt;
-                    &lt;p&gt;性别：${item.sex}&lt;/p&gt;
-                &lt;/div&gt;
-            &lt;/li&gt;`
-            uEl.innerHTML += str;
-        }
-</code></pre>
-<h2 id="4-模板引擎的方式">4、模板引擎的方式</h2>
-<p>模板引擎，我们依据课程，采用的是mustache模板引擎的方式来实现同样的效果,mustache是最早的html模板引擎，它的出现是极具创造性的，vue等库的底层实现也是依赖模板引擎的，当然Vue有着自己的一套！<br>
-mustache开源地址：[https://github.com/janl/mustache.js/]</p>
-<pre><code>&lt;script src=&quot;https://cdn.bootcdn.net/ajax/libs/mustache.js/4.1.0/mustache.min.js&quot;&gt;&lt;/script&gt;
-    &lt;script id=&quot;template&quot; type=&quot;x-tmpl-mustache&quot;&gt;
-            {{#arr}}
-            &lt;li&gt;
-                &lt;div class=&quot;hd&quot;&gt;{{ name }}的基本信息&lt;/div&gt;
-                &lt;div class=&quot;bd&quot;&gt;
-                    &lt;p&gt;姓名：{{ name }}&lt;/p&gt;
-                    &lt;p&gt;年龄：{{ age }}&lt;/p&gt;
-                    &lt;p&gt;性别：{{ sex }}&lt;/p&gt;
-                &lt;/div&gt;
-            &lt;/li&gt;
-            {{/arr}}
-        &lt;/script&gt;
-    &lt;script&gt;
-        var template = document.getElementById('template').innerHTML;
-        var rendered = Mustache.render(template, { arr: dataItems });
-        document.getElementById('list').innerHTML = rendered;
-    &lt;/script&gt;
-</code></pre>
-<p>从代码可以看出，虽然代码量不是最少的，但是其思想确实最具创造性的，通过模板的方式，结构更加清晰，让数据更加容易的生成视图。这里只是展示一个小小的例子，mustache还可以实现更加复杂的需求，比如数组的嵌套，条件判断等等</p>
+<h1 id="mustache实现机理简易图解">mustache实现机理简易图解</h1>
+<figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1611754344673.png" alt="" loading="lazy"></figure>
 
                 </div>
             </article>
@@ -257,8 +126,8 @@ mustache开源地址：[https://github.com/janl/mustache.js/]</p>
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://cyj20142932.github.io/post/css-shi-yong-pian-duan/" class="post-title gt-a-link">
-                    CSS实用片段
+                <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-mustache-mo-ban-yin-qing-de-shi-xian-ji-li/" class="post-title gt-a-link">
+                    Vue源码探析——正则表达式方式实现简易模板引擎！
                 </a>
             </div>
         
