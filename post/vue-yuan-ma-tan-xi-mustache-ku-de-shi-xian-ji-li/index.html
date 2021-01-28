@@ -86,7 +86,7 @@ toke..." />
 <div class="hide-on-mobile hide-on-tablet hide-on-desktop">
   <div id="search-lightbox" class="grid-container grid-small grid-parent mfp-hide">
     <div class="search-wrapper section">
-      <form id="gridea-search-form" data-update="1611842241234" action="/search/index.html" class="search-form"
+      <form id="gridea-search-form" data-update="1611842480377" action="/search/index.html" class="search-form"
         _lpchecked="1">
         <input type="text" name="q" id="s" value="" class="search-field" placeholder="搜点啥..." aria-label="搜点啥..."
           required="">
@@ -140,7 +140,7 @@ toke..." />
 <pre><code class="language-html">&lt;h1&gt;我买了一个{{thing}},好{{mood}}啊&lt;/h1&gt;
 </code></pre>
 <p>这一段模板中字符串由tokens表示则是以下数组形式</p>
-<pre><code>[
+<pre><code class="language-js">[
        [&quot;text&quot;, &quot;&lt;h1&gt;我买了一个&quot;],
        [&quot;name&quot;, &quot;thing&quot;],
        [&quot;text&quot;, &quot;,好&quot;],
@@ -149,7 +149,7 @@ toke..." />
 ]
 </code></pre>
 <p>纯文字则为text，不区分是否是标签，对于模板引擎都是字符串。大括号内部的就是name，每一个token都是一个数组</p>
-<pre><code>//数据
+<pre><code class="language-js">//数据
 data = {
             thing: &quot;华为手机&quot;,
             mood: &quot;开心&quot;
@@ -160,7 +160,7 @@ data = {
 <img src="https://cyj20142932.github.io/post-images/1611836564701.png" alt="" loading="lazy"></p>
 <h2 id="2-循环出现时的tokens结构">2、循环出现时的tokens结构</h2>
 <p>比如下面这种</p>
-<pre><code>&lt;div&gt;
+<pre><code class="language-html">&lt;div&gt;
         &lt;ul&gt;
             {{#arr}}
             &lt;li&gt;{{.}}&lt;/li&gt;
@@ -169,7 +169,7 @@ data = {
 &lt;/div&gt;
 </code></pre>
 <p>则对应的tokens则是一个嵌套的tokens</p>
-<pre><code>[
+<pre><code class="language-js">[
          [&quot;text&quot;, &quot;&lt;div&gt;&lt;ul&gt;&quot;],
          [&quot;#&quot;, &quot;arr&quot;, [
              [&quot;text&quot;, &quot;&lt;li&gt;&quot;],
@@ -180,7 +180,7 @@ data = {
 ]
 </code></pre>
 <p>更加复杂的结构，双重循环的结构</p>
-<pre><code>&lt;div&gt;
+<pre><code class="language-html">&lt;div&gt;
         &lt;ol&gt;
             {{#students}}
             &lt;li&gt;
@@ -198,7 +198,7 @@ data = {
 &lt;/div&gt;
 </code></pre>
 <p>那么编译出来的tokens则是如下这种结构</p>
-<pre><code>[
+<pre><code class="language-js">[
         [&quot;text&quot;, &quot;&lt;div&gt;&lt;ol&gt;&quot;],
         [&quot;#&quot;, &quot;students&quot;, [
             [&quot;text&quot;, &quot;&lt;li&gt;学生&quot;],
