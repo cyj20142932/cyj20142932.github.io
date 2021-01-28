@@ -6,7 +6,7 @@
 
 <title>Vue源码探析——mustache库的实现机理！ | Moon</title>
 
-<link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611835354627">
+<link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico?v=1611836570837">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cyj20142932.github.io/styles/main.css">
@@ -77,7 +77,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1611835354627" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1611836570837" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -118,6 +118,32 @@
 <!-- more -->
 <h1 id="mustache实现机理简易图解">mustache实现机理简易图解</h1>
 <figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1611762514615.png" alt="" loading="lazy"></figure>
+<h2 id="1-什么是tokens">1、什么是tokens？</h2>
+<blockquote>
+<p>tokens实际上就是模板字符串的JS表示，由一个JS的嵌套数组组成，毫不夸张，它是“抽象语法树”、“虚拟节点”等等的开山鼻祖！</p>
+</blockquote>
+<p>比如以下模板字符串</p>
+<pre><code class="language-html">&lt;h1&gt;我买了一个{{thing}},好{{mood}}啊&lt;/h1&gt;
+</code></pre>
+<p>这一段模板中字符串由tokens表示则是以下数组形式</p>
+<pre><code>[
+       [&quot;text&quot;, &quot;&lt;h1&gt;我买了一个&quot;],
+       [&quot;name&quot;, &quot;thing&quot;],
+       [&quot;text&quot;, &quot;,好&quot;],
+       [&quot;name&quot;, &quot;mood&quot;],
+       [&quot;text&quot;, &quot;啊&lt;/h1&gt;&quot;]
+]
+</code></pre>
+<p>纯文字则为text，不区分是否是标签，对于模板引擎都是字符串。大括号内部的就是name，每一个token都是一个数组</p>
+<pre><code>//数据
+data = {
+            thing: &quot;华为手机&quot;,
+            mood: &quot;开心&quot;
+        }
+
+</code></pre>
+<p>将模板字符串编译成tokens,tokens结合数据进行解析最终生成dom字符串<br>
+<img src="https://cyj20142932.github.io/post-images/1611836564701.png" alt="" loading="lazy"></p>
 
                 </div>
             </article>
