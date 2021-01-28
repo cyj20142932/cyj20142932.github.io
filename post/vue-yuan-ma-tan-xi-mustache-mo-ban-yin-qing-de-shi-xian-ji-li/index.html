@@ -82,7 +82,7 @@
 <div class="hide-on-mobile hide-on-tablet hide-on-desktop">
   <div id="search-lightbox" class="grid-container grid-small grid-parent mfp-hide">
     <div class="search-wrapper section">
-      <form id="gridea-search-form" data-update="1611842480377" action="/search/index.html" class="search-form"
+      <form id="gridea-search-form" data-update="1611842567459" action="/search/index.html" class="search-form"
         _lpchecked="1">
         <input type="text" name="q" id="s" value="" class="search-field" placeholder="搜点啥..." aria-label="搜点啥..."
           required="">
@@ -127,7 +127,7 @@
 <p>在正式的探究mustache的实现机理之前，我们需要先使用正则表达式的方式来模拟一个简易的模板引擎，或者说这不能成为引擎，只能说是一种字符串替换能力，用来实现简单地数据到视图的转换！</p>
 <h2 id="正则表达式实现一个简单地字符串处理能力">正则表达式实现一个简单地字符串处理能力</h2>
 <p>这里就引用课程中的实例了，也比较简单，容易理解</p>
-<pre><code>//正则方式实现字符串内容的替换
+<pre><code class="language-js">//正则方式实现字符串内容的替换
         const templateStr = '&lt;h1&gt;我买了一个{{thing}}，好{{mood}}&lt;/h1&gt;';
         const data = {
             thing: &quot;华为手机&quot;,

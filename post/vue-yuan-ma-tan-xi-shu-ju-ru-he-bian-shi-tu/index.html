@@ -81,7 +81,7 @@
 <div class="hide-on-mobile hide-on-tablet hide-on-desktop">
   <div id="search-lightbox" class="grid-container grid-small grid-parent mfp-hide">
     <div class="search-wrapper section">
-      <form id="gridea-search-form" data-update="1611842480377" action="/search/index.html" class="search-form"
+      <form id="gridea-search-form" data-update="1611842567459" action="/search/index.html" class="search-form"
         _lpchecked="1">
         <input type="text" name="q" id="s" value="" class="search-field" placeholder="搜点啥..." aria-label="搜点啥..."
           required="">
@@ -174,8 +174,7 @@
 </code></pre>
 <p>下面我们就以这四种方式来实现同样的需求</p>
 <h2 id="1-纯dom方式实现">1、纯DOM方式实现</h2>
-<pre><code>
-        const uEl = document.getElementById(&quot;list&quot;);
+<pre><code class="language-js">        const uEl = document.getElementById(&quot;list&quot;);
 
         for (const item of dataItems) {
             //创建一个li标签
@@ -205,7 +204,7 @@
 <p>以上写法不是唯一，只是为了展示纯DOM的方式，可以看到，这种方式是非常麻烦的，通过纯粹的dom方式是最底层的方式，但是在现在来看，这种方式确实过于繁琐</p>
 <h2 id="2-数组join法确实没听说过也没用过">2、数组Join法（确实没听说过也没用过）</h2>
 <p>数组join法据说是为了解决无法换行字符串（es6之前没有模板字符串）而被人们想出来的一种另类的方法，说白了实际上就是为了让代码看上去更加有结构，据说是曾经前端必回知识，下面我们看看代码：</p>
-<pre><code>for (const item of dataItems) {
+<pre><code class="language-js">for (const item of dataItems) {
             const str = [
                 '&lt;li&gt;',
                 '    &lt;div class=&quot;hd&quot;&gt;' + item.name + '的基本信息&lt;/div&gt;',
@@ -221,7 +220,7 @@
 </code></pre>
 <h2 id="3-es6模板字符串方式">3、es6模板字符串方式</h2>
 <p>来到es6之后字符串就变得简单了，也就是模板字符串（反引号方法）可以换行来写,就算是现在，在很多场合也是很有用的，并且很多时候用起来非常的方便。</p>
-<pre><code>const uEl = document.getElementById(&quot;list&quot;);
+<pre><code class="language-js">const uEl = document.getElementById(&quot;list&quot;);
 
         for (const item of dataItems) {
 
@@ -240,7 +239,8 @@
 <h2 id="4-模板引擎的方式">4、模板引擎的方式</h2>
 <p>模板引擎，我们依据课程，采用的是mustache模板引擎的方式来实现同样的效果,mustache是最早的html模板引擎，它的出现是极具创造性的，vue等库的底层实现也是依赖模板引擎的，当然Vue有着自己的一套！<br>
 mustache开源地址：[<a href="https://github.com/janl/mustache.js/">https://github.com/janl/mustache.js/</a>]</p>
-<pre><code>&lt;script src=&quot;https://cdn.bootcdn.net/ajax/libs/mustache.js/4.1.0/mustache.min.js&quot;&gt;&lt;/script&gt;
+<pre><code class="language-html">&lt;script src=&quot;https://cdn.bootcdn.net/ajax/libs/mustache.js/4.1.0/mustache.min.js&quot;&gt;
+&lt;/script&gt;
     &lt;script id=&quot;template&quot; type=&quot;x-tmpl-mustache&quot;&gt;
             {{#arr}}
             &lt;li&gt;
