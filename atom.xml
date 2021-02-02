@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cyj20142932.github.io</id>
     <title>Moon博客专栏</title>
-    <updated>2021-01-29T06:15:32.339Z</updated>
+    <updated>2021-02-02T14:09:57.264Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://cyj20142932.github.io"/>
     <link rel="self" href="https://cyj20142932.github.io/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://cyj20142932.github.io/images/avatar.png</logo>
     <icon>https://cyj20142932.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Moon博客专栏</rights>
+    <entry>
+        <title type="html"><![CDATA[Vue源码探析——mustache之扫描器Scanner的主要作用！]]></title>
+        <id>https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-mustache-zhi-sao-miao-qi-scanner-de-zhu-yao-zuo-yong/</id>
+        <link href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-mustache-zhi-sao-miao-qi-scanner-de-zhu-yao-zuo-yong/">
+        </link>
+        <updated>2021-02-02T13:47:22.000Z</updated>
+        <summary type="html"><![CDATA[<p>在mustache的源码中，有一个Scanner类，主要负责字符串的扫描并记录操作，是底层有模板字符串转换为tokens的一个重要步骤！</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>在mustache的源码中，有一个Scanner类，主要负责字符串的扫描并记录操作，是底层有模板字符串转换为tokens的一个重要步骤！</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Vue源码探析——前端工程化，搭建mastache开发环境！]]></title>
         <id>https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-qian-duan-gong-cheng-hua-da-jian-mastache-kai-fa-huan-jing/</id>
