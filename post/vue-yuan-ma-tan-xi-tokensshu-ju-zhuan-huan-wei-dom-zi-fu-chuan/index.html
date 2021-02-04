@@ -1,8 +1,8 @@
 <html>
   <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>标签列表 | Moon博客专栏</title>
+<title>Vue源码探析——tokens+数据转换为dom字符串！ | Moon博客专栏</title>
 <meta name="description" content="温故而知新" />
 <link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico">
 <link rel="stylesheet" href="https://cyj20142932.github.io/styles/main.css">
@@ -14,11 +14,20 @@
 <script src="https://cyj20142932.github.io/media/js/view-image.min.js"></script>
 <script src="https://cyj20142932.github.io/media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://cyj20142932.github.io/media/js/functions.js"></script>
+    <meta name="referrer" content="never">
+    <meta name="description" content="tokens+数据转换为dom字符串！
+
+简单地例子
+模板
+const templateStr = &quot;&lt;h1&gt;我买了一个{{thing}}，好{{mood}}啊！&lt;h1&gt;&quot;;
+
+数据
+const ..." />
+    <meta name="keywords" content="" />
+    <script src="https://cyj20142932.github.io/media/js/waterfall.min.js"></script>
+    <script src="https://cyj20142932.github.io/media/js/prism.min.js"></script>
   </head>
   <body>
-    <!-- start: #wrapper -->
-    <div class="wrapper">
-      
       <header id="header" class="grid-container">
   <!-- start: .menu-wrapper -->
   <div class="menu-mobile">
@@ -90,34 +99,263 @@
   </div>
 </div>
 
-      <main id="tags" class="main fullcover no-sidebar content">
-        <div class="grid-container module-wrapper enable-masonry aos-init aos-animate" data-aos="fade-up">
+      <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
+
+        <div class="center content">
+          <div class="featured-image cover" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-tokensshu-ju-zhuan-huan-wei-dom-zi-fu-chuan.png');">
+            <div class="meta top"> 
+              <time class="meta-info" style="float:left;" datetime="2021-02-04"><i class="fa fa-calendar"></i><span class="lately">1 小时前</span></time>
+              
+            </div>
+            <div class="info">
+              <div class="tags ">
+                
+              </div>
+              <h1 class="title ularge white bold">Vue源码探析——tokens+数据转换为dom字符串！</h1>
+            </div>
+          </div>
+        </div>  
+
         <div class="epcl-page-wrapper">
-          <div class="left-content grid-70 np-mobile widget_epcl_related_articles">
+          <div class="left-content grid-70 np-mobile">
+            <article class="main-article post">
+              <section class="post-content">
+                <div class="text">
+                  <p>tokens+数据转换为dom字符串！</p>
+<!-- more -->
+<h2 id="简单地例子">简单地例子</h2>
+<h3 id="模板">模板</h3>
+<pre><code class="language-js">const templateStr = &quot;&lt;h1&gt;我买了一个{{thing}}，好{{mood}}啊！&lt;h1&gt;&quot;;
+</code></pre>
+<h3 id="数据">数据</h3>
+<pre><code class="language-js">const data = {
+            thing: &quot;华为手机&quot;,
+            mood: '开心'
+        }
+</code></pre>
+<h2 id="生成dom字符串">生成dom字符串</h2>
+<pre><code class="language-js">/**
+ * 数据结合tokens生成dom
+ * @param {*} tokens
+ * @param {*} data
+ */
+export default function renderTemplate(tokens, data) {
+  //   console.log(tokens);
+  //   console.log(data);
 
-          <div class="widget_tag_cloud tagcloud">
-            
-              <a href="https://cyj20142932.github.io/tag/mustache/" class="ctag ctag-0 ctag-mustache" aria-label="">mustache</a>
-            
-              <a href="https://cyj20142932.github.io/tag/vue-yuan-ma/" class="ctag ctag-1 ctag-vue-yuan-ma" aria-label="">vue源码</a>
-            
-              <a href="https://cyj20142932.github.io/tag/MPZDu0Qjo/" class="ctag ctag-2 ctag-MPZDu0Qjo" aria-label="">Vue</a>
-            
-              <a href="https://cyj20142932.github.io/tag/mo-ban-yin-qing/" class="ctag ctag-3 ctag-mo-ban-yin-qing" aria-label="">模板引擎</a>
-            
-              <a href="https://cyj20142932.github.io/tag/css/" class="ctag ctag-4 ctag-css" aria-label="">CSS</a>
-            
-              <a href="https://cyj20142932.github.io/tag/mUkxEKuOy/" class="ctag ctag-5 ctag-mUkxEKuOy" aria-label="">Gridea</a>
-            
-          </div>
-        </div>
+  let resultStr = &quot;&quot;;
+  //每一个token都是一个二维数组
+  for (const token of tokens) {
+    if (token[0] == &quot;text&quot;) {
+      resultStr += token[1];
+    } else if (token[0] == &quot;name&quot;) {
+      resultStr += data[token[1]];
+    } else {
+    }
+  }
 
-        </div>
+  return resultStr;
+}
+</code></pre>
+<p><img src="https://cyj20142932.github.io/post-images/1612443973501.png" alt="" loading="lazy"><br>
+这一部分是比较简单地，因为仅仅只有一个大括号，并且数据并没有嵌套（也就是   {a:{b:{c:100}}}  即a.b.c），而且还不包括数组循环嵌套结构，也就是没有#这样的标记，我们从最简单的一步步来，tokens变为dom的最难点就是这种嵌套结构的！</p>
+<h2 id="接下来的嵌套结构思路">接下来的嵌套结构思路</h2>
+<p>由于#标记的那一项也是一个tokens，和最外层是类似的，此处的编程思维需要用到递归，一层一层处理。在正式些递归之前，我们需要了解的是，到目前为止我们还没遇到对象嵌套的情况，因此我们需要对此进行特殊处理！</p>
+<h3 id="模板和数据">模板和数据</h3>
+<pre><code class="language-js"> const templateStr = `
+        {{#arr}}
+            &lt;li&gt;
+                &lt;div class=&quot;hd&quot;&gt;{{name}}的基本信息&lt;/div&gt;
+                &lt;div class=&quot;bd&quot;&gt;
+                    &lt;p&gt;姓名：{{name}}&lt;/p&gt;
+                    &lt;p&gt;年龄：{{age}}&lt;/p&gt;
+                    &lt;p&gt;性别：{{sex}}&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;ol&gt;
+                    {{#hobbies}}
+                        &lt;li&gt;{{.}}&lt;/li&gt;
+                    {{/hobbies}}
+                &lt;/ol&gt;
+            &lt;/li&gt;
+        {{/arr}}`;
+        const data = {
+            arr: [
+                {
+                    name: &quot;小明&quot;,
+                    age: 20,
+                    sex: &quot;男&quot;,
+                    hobbies: [&quot;羽毛球&quot;, &quot;乒乓球&quot;]
+                },
+                {
+                    name: &quot;小红&quot;,
+                    age: 21,
+                    sex: &quot;女&quot;, hobbies: [&quot;羽毛球&quot;, &quot;乒乓球&quot;]
+                },
+                {
+                    name: &quot;小张&quot;,
+                    age: 23,
+                    sex: &quot;男&quot;, hobbies: [&quot;羽毛球&quot;, &quot;乒乓球&quot;]
+                },
+            ]
+        }
+</code></pre>
+<pre><code class="language-js">//函数的功能，功能是取的嵌套结构的数据值，也就是   {a:{b:{c:100}}}  即a.b.c
+export default function lookup(dataObj, keyName) {
+    //不需要判断.
+  let keys = keyName.split(&quot;,&quot;);
+  let value = dataObj;
+  for (const key of keys) {
+    value = value[key];
+  }
+  return value;
+}
+</code></pre>
+<p>那么我们上一部分代码可以改造一下</p>
+<pre><code class="language-js">export default function renderTemplate(tokens, data) {
+  //   console.log(tokens);
+  //   console.log(data);
+
+  let resultStr = &quot;&quot;;
+  //每一个token都是一个二维数组
+  for (const token of tokens) {
+    if (token[0] == &quot;text&quot;) {
+      resultStr += token[1];
+    } else if (token[0] == &quot;name&quot;) {
+      resultStr += lookup(data, token[1]);
+    } else if (token[0] == &quot;#&quot;) {
+      // resultStr+=
+    }
+  }
+
+  return resultStr;
+}
+</code></pre>
+<h3 id="递归">递归</h3>
+<pre><code class="language-js">import renderTemplate from &quot;./renderTemplate.js&quot;;
+import lookup from &quot;./lookup&quot;;
+
+/*
+ * 处理嵌套递归,需要递归调用解析token函数，低估次数取决于数据数组的长度，因为是循环
+ */
+export default function parseArray(token, data) {
+  let resultStr = &quot;&quot;;
+  let arrs = lookup(data, token[1]);
+  for (const value of arrs) {
+    // console.log(value);
+    //数组有可能不是对象数组，如这样的数组 [&quot;羽毛球&quot;,&quot;乒乓球&quot;]，这时候需要改下一lookup函数，因为这个地方是一个.，因此需要将.特殊考虑
+    resultStr += renderTemplate(token[2], {
+      &quot;.&quot;: value,
+      ...value,
+    });
+  }
+  return resultStr;
+}
+</code></pre>
+<p>并且这里我们lookup函数需要改造一下！</p>
+<pre><code class="language-js">//函数的功能，功能是取的嵌套结构的数据值，也就是   {a:{b:{c:100}}}  即a.b.c
+export default function lookup(dataObj, keyName) {
+    //不能是点本身
+  if (keyName != &quot;.&quot;) {
+    let keys = keyName.split(&quot;,&quot;);
+    let value = dataObj;
+    for (const key of keys) {
+      value = value[key];
+    }
+    return value;
+  }
+  return dataObj[keyName];
+}
+</code></pre>
+<pre><code class="language-js">import lookup from &quot;./lookup.js&quot;;
+import parseArray from &quot;./parseArray.js&quot;;
+
+/**
+ * 数据结合tokens生成dom
+ * @param {*} tokens
+ * @param {*} data
+ */
+export default function renderTemplate(tokens, data) {
+  //   console.log(tokens);
+  //   console.log(data);
+
+  let resultStr = &quot;&quot;;
+  //每一个token都是一个二维数组
+  for (const token of tokens) {
+    if (token[0] == &quot;text&quot;) {
+      resultStr += token[1];
+    } else if (token[0] == &quot;name&quot;) {
+      resultStr += lookup(data, token[1]);
+    } else if (token[0] == &quot;#&quot;) {
+      resultStr += parseArray(token, data);
+    }
+  }
+
+  return resultStr;
+}
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1612447762362.png" alt="" loading="lazy"></figure>
+
+                </div>
+                <div class="clear"></div>
+              </section>
+            </article>
+            <div class="clear"></div>
+
+            <section class="related section">
+              
+              
+              <article class="next grid-50 tablet-grid-50 grid-parent">
+                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-mo-ban-zi-fu-chuan-zhuan-tokens-suan-fa.png');"></div>
+                 <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-mo-ban-zi-fu-chuan-zhuan-tokens-suan-fa/" class="full-link"></a>
+                 <div class="info">
+                  <time datetime="2021-02-03">2021-02-03</time>
+                  <h4 class="title white no-margin">Vue源码探析——模板字符串转tokens算法！</h4>
+                </div>
+                 <span class="epcl-button red">
+                  <img src="https://cyj20142932.github.io/media/images/right-arrow.svg" width="15" alt="Left Arrow">
+                </span>
+                <div class="overlay"></div>
+              </article>
+              
+
+                <div class="clear"></div>
+            </section>
+
+              <div class="clear"></div>
+              
+            
+              <div id="comments" class="bg-white hosted ">
+                
+                  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+<div class="clear"></div>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '3ca8130bc835e6dcf5ed',
+    clientSecret: 'fb174f6c42c791ddaa38e085f2013168a9a80e13',
+    repo: 'cyj20142932.github.io',
+    owner: 'cyj20142932',
+    admin: ['cyj20142932'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+                
+                
+              </div>
+            
+
+            </div>
           </div>
-        </div>
       </main>
 
-    <footer id="footer" class="grid-container">
+      <footer id="footer" class="grid-container">
   <div class="widgets row gradient-effect">
     <div class="default-sidebar border-effect">
       <div class="grid-33 tablet-grid-50 mobile-grid-100">
@@ -294,6 +532,9 @@
 
 <div class="clear"></div>
 
+
+      
+    <script src="https://cyj20142932.github.io/media/js/functions-post.js"></script>
 
     </div>
     <!-- end: #wrapper -->
