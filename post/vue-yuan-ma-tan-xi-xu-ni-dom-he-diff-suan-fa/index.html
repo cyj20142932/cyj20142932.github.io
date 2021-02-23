@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gridea博客客户端 | Moon博客专栏</title>
+<title>Vue源码探析——虚拟Dom和Diff算法！ | Moon博客专栏</title>
 <meta name="description" content="温故而知新" />
 <link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico">
 <link rel="stylesheet" href="https://cyj20142932.github.io/styles/main.css">
@@ -15,15 +15,11 @@
 <script src="https://cyj20142932.github.io/media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://cyj20142932.github.io/media/js/functions.js"></script>
     <meta name="referrer" content="never">
-    <meta name="description" content="👏  欢迎使用 Gridea ！
-✍️  Gridea 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...
+    <meta name="description" content="从本文开始学习虚拟DOM和Diff算法，虚拟Dom和Diff算法我相信要么大家略懂一点，不过也仅限于此，因此，为了真正的弄懂Diff算法，如果咱们动手去写出来，对理解虚拟DOM和Diff算法将会有很大帮助！
 
-Github
-Gridea 主页
-示例网站
-特性👇
-📝  你可以使用最酷的 Markdo..." />
-    <meta name="keywords" content="Gridea" />
+介绍Diff算法
+首先看一个图..." />
+    <meta name="keywords" content="vue源码,Vue" />
     <script src="https://cyj20142932.github.io/media/js/waterfall.min.js"></script>
     <script src="https://cyj20142932.github.io/media/js/prism.min.js"></script>
   </head>
@@ -102,18 +98,20 @@ Gridea 主页
       <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
 
         <div class="center content">
-          <div class="featured-image cover" style="background-image: url('https://cyj20142932.github.io/post-images/hello-gridea.png');">
+          <div class="featured-image cover" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-xu-ni-dom-he-diff-suan-fa.png');">
             <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2018-12-12"><i class="fa fa-calendar"></i><span class="lately">2 年前</span></time>
+              <time class="meta-info" style="float:left;" datetime="2021-02-23"><i class="fa fa-calendar"></i><span class="lately">23 分钟前</span></time>
               
             </div>
             <div class="info">
               <div class="tags ">
                 
-                      <a href="https://cyj20142932.github.io/tag/mUkxEKuOy/" class="ctag ctag-0 ctag-mUkxEKuOy" aria-label="">Gridea</a>
+                      <a href="https://cyj20142932.github.io/tag/vue-yuan-ma/" class="ctag ctag-0 ctag-vue-yuan-ma" aria-label="">vue源码</a>
+                    
+                      <a href="https://cyj20142932.github.io/tag/MPZDu0Qjo/" class="ctag ctag-1 ctag-MPZDu0Qjo" aria-label="">Vue</a>
                     
               </div>
-              <h1 class="title ularge white bold">Gridea博客客户端</h1>
+              <h1 class="title ularge white bold">Vue源码探析——虚拟Dom和Diff算法！</h1>
             </div>
           </div>
         </div>  
@@ -123,27 +121,19 @@ Gridea 主页
             <article class="main-article post">
               <section class="post-content">
                 <div class="text">
-                  <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+                  <p>从本文开始学习虚拟DOM和Diff算法，虚拟Dom和Diff算法我相信要么大家略懂一点，不过也仅限于此，因此，为了真正的弄懂Diff算法，如果咱们动手去写出来，对理解虚拟DOM和Diff算法将会有很大帮助！</p>
 <!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+<h1 id="介绍diff算法">介绍Diff算法</h1>
+<p>首先看一个图</p>
+<figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1614089157582.png" alt="" loading="lazy"></figure>
+<p>这是前后两种房子的装饰，从房1到房2，变化仅仅就那么一点，理论上来说，我们将房1的装饰全部拆了，重新装修成房2，那么代价将是巨大的，那么在计算机的逻辑中，我们需要一种比对算法来确定房1到房2的区别，以便于用最小的代价完成从房1到房2的转变，这就是Diff算法！</p>
+<figure data-type="image" tabindex="2"><img src="https://cyj20142932.github.io/post-images/1614089413245.png" alt="" loading="lazy"></figure>
+<p>以此类推，我们代码结构也是如此</p>
+<figure data-type="image" tabindex="3"><img src="https://cyj20142932.github.io/post-images/1614089504931.png" alt="" loading="lazy"></figure>
+<p>通过以上的图片以及文字介绍，我们大致弄明白了其Diff算法是怎么一回事，下面我们来了解下虚拟DOM</p>
+<h1 id="介绍虚拟dom">介绍虚拟DOM</h1>
+<p>图片更加容易理解，虚拟DOM其实就是对真实DOM进行JavaScript对象化的一种特定结构的js对象。</p>
+<figure data-type="image" tabindex="4"><img src="https://cyj20142932.github.io/post-images/1614089899074.png" alt="" loading="lazy"></figure>
 
                 </div>
                 <div class="clear"></div>
@@ -153,19 +143,19 @@ Gridea 主页
 
             <section class="related section">
               
-              <article class="prev grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/shi-yong-javascript-ku-he-ji.jpg');"></div>
-                 <a href="https://cyj20142932.github.io/post/shi-yong-javascript-ku-he-ji/" class="full-link"></a>
+              
+              <article class="next grid-50 tablet-grid-50 grid-parent">
+                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-tokensshu-ju-zhuan-huan-wei-dom-zi-fu-chuan.png');"></div>
+                 <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-tokensshu-ju-zhuan-huan-wei-dom-zi-fu-chuan/" class="full-link"></a>
                  <div class="info">
-                  <time datetime="2020-01-01">2020-01-01</time>
-                  <h4 class="title white no-margin">实用JavaScript库合集！</h4>
+                  <time datetime="2021-02-04">2021-02-04</time>
+                  <h4 class="title white no-margin">Vue源码探析——tokens+数据转换为dom字符串！</h4>
                 </div>
                  <span class="epcl-button red">
-                  <img src="https://cyj20142932.github.io/media/images/left-arrow.svg" width="15" alt="Left Arrow">
+                  <img src="https://cyj20142932.github.io/media/images/right-arrow.svg" width="15" alt="Left Arrow">
                 </span>
                 <div class="overlay"></div>
               </article>
-              
               
 
                 <div class="clear"></div>
