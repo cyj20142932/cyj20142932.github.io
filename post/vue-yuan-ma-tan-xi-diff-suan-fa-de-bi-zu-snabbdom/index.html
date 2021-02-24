@@ -83,7 +83,7 @@ https://github.com/snabbdom/snabb..." />
 <div class="hide-on-mobile hide-on-tablet hide-on-desktop">
   <div id="search-lightbox" class="grid-container grid-small grid-parent mfp-hide">
     <div class="search-wrapper section">
-      <form id="gridea-search-form" data-update="1614168171932" action="/search/index.html" class="search-form"
+      <form id="gridea-search-form" data-update="1614168494941" action="/search/index.html" class="search-form"
         _lpchecked="1">
         <input type="text" name="q" id="s" value="" class="search-field" placeholder="搜点啥..." aria-label="搜点啥..."
           required="">
@@ -100,7 +100,7 @@ https://github.com/snabbdom/snabb..." />
         <div class="center content">
           <div class="featured-image cover" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-diff-suan-fa-de-bi-zu-snabbdom.png');">
             <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2021-02-24"><i class="fa fa-calendar"></i><span class="lately">30 分钟前</span></time>
+              <time class="meta-info" style="float:left;" datetime="2021-02-24"><i class="fa fa-calendar"></i><span class="lately">36 分钟前</span></time>
               
             </div>
             <div class="info">
@@ -185,6 +185,66 @@ npm i -S snabbdom
 </code></pre>
 <figure data-type="image" tabindex="4"><img src="https://cyj20142932.github.io/post-images/1614168091985.png" alt="" loading="lazy"></figure>
 <p>这样简单的snabbdom测试环境就搭建好了！</p>
+<h1 id="demo程序">demo程序</h1>
+<p>官方示例</p>
+<pre><code class="language-js">import { init } from &quot;snabbdom/init&quot;;
+import { classModule } from &quot;snabbdom/modules/class&quot;;
+import { propsModule } from &quot;snabbdom/modules/props&quot;;
+import { styleModule } from &quot;snabbdom/modules/style&quot;;
+import { eventListenersModule } from &quot;snabbdom/modules/eventlisteners&quot;;
+import { h } from &quot;snabbdom/h&quot;; // helper function for creating vnodes
+
+const patch = init([
+  // Init patch function with chosen modules
+  classModule, // makes it easy to toggle classes
+  propsModule, // for setting properties on DOM elements
+  styleModule, // handles styling on elements with support for animations
+  eventListenersModule, // attaches event listeners
+]);
+
+const container = document.getElementById(&quot;container&quot;);
+
+const vnode = h(
+  &quot;div#container.two.classes&quot;,
+  {
+    on: {
+      click: () =&gt; {
+        alert(&quot;haha&quot;);
+      },
+    },
+  },
+  [
+    h(&quot;span&quot;, { style: { fontWeight: &quot;bold&quot; } }, &quot;This is bold&quot;),
+    &quot; and this is just normal text&quot;,
+    h(&quot;a&quot;, { props: { href: &quot;/foo&quot; } }, &quot;I'll take you places!&quot;),
+  ]
+);
+// Patch into empty DOM element – this modifies the DOM as a side effect
+patch(container, vnode);
+
+const newVnode = h(
+  &quot;div#container.two.classes&quot;,
+  {
+    on: {
+      click: () =&gt; {
+        alert(&quot;hehe&quot;);
+      },
+    },
+  },
+  [
+    h(
+      &quot;span&quot;,
+      { style: { fontWeight: &quot;normal&quot;, fontStyle: &quot;italic&quot; } },
+      &quot;This is now italic type&quot;
+    ),
+    &quot; and this is still just normal text&quot;,
+    h(&quot;a&quot;, { props: { href: &quot;/bar&quot; } }, &quot;I'll take you places!&quot;),
+  ]
+);
+patch(vnode, newVnode); // Snabbdom efficiently updates the old view to the new state
+
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://cyj20142932.github.io/post-images/1614168488871.png" alt="" loading="lazy"></figure>
 
                 </div>
                 <div class="clear"></div>
