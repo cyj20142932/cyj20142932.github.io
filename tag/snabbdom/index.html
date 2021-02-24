@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Vue源码探析——虚拟Dom和Diff算法！ | Moon博客专栏</title>
+<title>snabbdom | Moon博客专栏</title>
 <meta name="description" content="温故而知新" />
 <link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico">
 <link rel="stylesheet" href="https://cyj20142932.github.io/styles/main.css">
@@ -14,16 +14,11 @@
 <script src="https://cyj20142932.github.io/media/js/view-image.min.js"></script>
 <script src="https://cyj20142932.github.io/media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://cyj20142932.github.io/media/js/functions.js"></script>
-    <meta name="referrer" content="never">
-    <meta name="description" content="从本文开始学习虚拟DOM和Diff算法，虚拟Dom和Diff算法我相信要么大家略懂一点，不过也仅限于此，因此，为了真正的弄懂Diff算法，如果咱们动手去写出来，对理解虚拟DOM和Diff算法将会有很大帮助！
-
-介绍Diff算法
-首先看一个图..." />
-    <meta name="keywords" content="vue源码,Vue" />
-    <script src="https://cyj20142932.github.io/media/js/waterfall.min.js"></script>
-    <script src="https://cyj20142932.github.io/media/js/prism.min.js"></script>
   </head>
   <body>
+    <!-- start: #wrapper -->
+    <div class="wrapper">
+      
       <header id="header" class="grid-container">
   <!-- start: .menu-wrapper -->
   <div class="menu-mobile">
@@ -95,120 +90,45 @@
   </div>
 </div>
 
-      <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
-
-        <div class="center content">
-          <div class="featured-image cover" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-xu-ni-dom-he-diff-suan-fa.png');">
-            <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2021-02-23"><i class="fa fa-calendar"></i><span class="lately">1 天前</span></time>
-              
-            </div>
-            <div class="info">
-              <div class="tags ">
-                
-                      <a href="https://cyj20142932.github.io/tag/vue-yuan-ma/" class="ctag ctag-0 ctag-vue-yuan-ma" aria-label="">vue源码</a>
-                    
-                      <a href="https://cyj20142932.github.io/tag/MPZDu0Qjo/" class="ctag ctag-1 ctag-MPZDu0Qjo" aria-label="">Vue</a>
-                    
-              </div>
-              <h1 class="title ularge white bold">Vue源码探析——虚拟Dom和Diff算法！</h1>
-            </div>
-          </div>
-        </div>  
-
+      <main id="home" class="main fullcover no-sidebar content">
+        <div class="grid-container module-wrapper enable-masonry aos-init aos-animate" data-aos="fade-up">
         <div class="epcl-page-wrapper">
-          <div class="left-content grid-70 np-mobile">
-            <article class="main-article post">
-              <section class="post-content">
-                <div class="text">
-                  <p>从本文开始学习虚拟DOM和Diff算法，虚拟Dom和Diff算法我相信要么大家略懂一点，不过也仅限于此，因此，为了真正的弄懂Diff算法，如果咱们动手去写出来，对理解虚拟DOM和Diff算法将会有很大帮助！</p>
-<!-- more -->
-<h1 id="介绍diff算法">介绍Diff算法</h1>
-<p>首先看一个图</p>
-<figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1614089157582.png" alt="" loading="lazy"></figure>
-<p>这是前后两种房子的装饰，从房1到房2，变化仅仅就那么一点，理论上来说，我们将房1的装饰全部拆了，重新装修成房2，那么代价将是巨大的，那么在计算机的逻辑中，我们需要一种比对算法来确定房1到房2的区别，以便于用最小的代价完成从房1到房2的转变，这就是Diff算法！</p>
-<figure data-type="image" tabindex="2"><img src="https://cyj20142932.github.io/post-images/1614089413245.png" alt="" loading="lazy"></figure>
-<p>以此类推，我们代码结构也是如此</p>
-<figure data-type="image" tabindex="3"><img src="https://cyj20142932.github.io/post-images/1614089504931.png" alt="" loading="lazy"></figure>
-<p>通过以上的图片以及文字介绍，我们大致弄明白了其Diff算法是怎么一回事，下面我们来了解下虚拟DOM</p>
-<h1 id="介绍虚拟dom">介绍虚拟DOM</h1>
-<p>图片更加容易理解，虚拟DOM其实就是对真实DOM进行JavaScript对象化的一种特定结构的js对象。</p>
-<figure data-type="image" tabindex="4"><img src="https://cyj20142932.github.io/post-images/1614089899074.png" alt="" loading="lazy"></figure>
-
-                </div>
-                <div class="clear"></div>
-              </section>
-            </article>
-            <div class="clear"></div>
-
-            <section class="related section">
-              
-              <article class="prev grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-diff-suan-fa-de-bi-zu-snabbdom.png');"></div>
-                 <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-diff-suan-fa-de-bi-zu-snabbdom/" class="full-link"></a>
-                 <div class="info">
-                  <time datetime="2021-02-24">2021-02-24</time>
-                  <h4 class="title white no-margin">Vue源码探析——Diff算法的鼻祖snabbdom！</h4>
-                </div>
-                 <span class="epcl-button red">
-                  <img src="https://cyj20142932.github.io/media/images/left-arrow.svg" width="15" alt="Left Arrow">
-                </span>
-                <div class="overlay"></div>
-              </article>
-              
-              
-              <article class="next grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-tokensshu-ju-zhuan-huan-wei-dom-zi-fu-chuan.png');"></div>
-                 <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-tokensshu-ju-zhuan-huan-wei-dom-zi-fu-chuan/" class="full-link"></a>
-                 <div class="info">
-                  <time datetime="2021-02-04">2021-02-04</time>
-                  <h4 class="title white no-margin">Vue源码探析——tokens+数据转换为dom字符串！</h4>
-                </div>
-                 <span class="epcl-button red">
-                  <img src="https://cyj20142932.github.io/media/images/right-arrow.svg" width="15" alt="Left Arrow">
-                </span>
-                <div class="overlay"></div>
-              </article>
-              
-
-                <div class="clear"></div>
-            </section>
-
-              <div class="clear"></div>
-              
-            
-              <div id="comments" class="bg-white hosted ">
+          <div class="left-content grid-70 np-mobile widget_epcl_related_articles">
                 
-                  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+            <!-- start: .articles -->
+            <div class="main-article post">
+  <h2 class="year"># snabbdom</h2>
+    
+      <article class="item default grid-33 tablet-grid-50 np-mobile">
+        <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-diff-suan-fa-de-bi-zu-snabbdom/" class="thumb hover-effect">
+          <span class="fullimage cover" style="display: block;background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-diff-suan-fa-de-bi-zu-snabbdom.png');"></span>
+        </a>
+        <div class="info gradient-effect">
+          <time datetime="2021-02-24">2021-02-24</time>
+          <h4 class="title usmall">
+            <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-diff-suan-fa-de-bi-zu-snabbdom/">Vue源码探析——Diff算法的鼻祖snabbdom！</a>
+          </h4>
+        </div>
+      </article>
 
-<div id="gitalk-container"></div>
-<div class="clear"></div>
-
-<script>
-  var gitalk = new Gitalk({
-    clientID: '3ca8130bc835e6dcf5ed',
-    clientSecret: 'fb174f6c42c791ddaa38e085f2013168a9a80e13',
-    repo: 'cyj20142932.github.io',
-    owner: 'cyj20142932',
-    admin: ['cyj20142932'],
-    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
-    distractionFreeMode: false  // Facebook-like distraction free mode
-  })
-
-  gitalk.render('gitalk-container')
-</script>
-
+    
+    <div class="clear"></div>
+</div>
+            <!-- end: .articles -->
+            
+                        <div class="epcl-pagination section">
+              <div class="nav">
                 
                 
               </div>
-            
-
             </div>
+            
           </div>
+          </div>
+        </div>
       </main>
 
-      <footer id="footer" class="grid-container">
+    <footer id="footer" class="grid-container">
   <div class="widgets row gradient-effect">
     <div class="default-sidebar border-effect">
       <div class="grid-33 tablet-grid-50 mobile-grid-100">
@@ -393,9 +313,6 @@
 
 <div class="clear"></div>
 
-
-      
-    <script src="https://cyj20142932.github.io/media/js/functions-post.js"></script>
 
     </div>
     <!-- end: #wrapper -->
