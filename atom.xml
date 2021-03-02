@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cyj20142932.github.io</id>
     <title>Moon博客专栏</title>
-    <updated>2021-02-24T12:11:37.932Z</updated>
+    <updated>2021-03-02T14:11:48.476Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://cyj20142932.github.io"/>
     <link rel="self" href="https://cyj20142932.github.io/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://cyj20142932.github.io/images/avatar.png</logo>
     <icon>https://cyj20142932.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Moon博客专栏</rights>
+    <entry>
+        <title type="html"><![CDATA[Vue源码探析——虚拟DOM和Diff算法，以及h函数！]]></title>
+        <id>https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-xu-ni-dom-he-diff-suan-fa-yi-ji-h-han-shu/</id>
+        <link href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-xu-ni-dom-he-diff-suan-fa-yi-ji-h-han-shu/">
+        </link>
+        <updated>2021-02-24T12:13:58.000Z</updated>
+        <summary type="html"><![CDATA[<p>Diff算法是发生在虚拟DOM之间的一种精细化比较，最小量更新，最后反映到真实DOM</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>Diff算法是发生在虚拟DOM之间的一种精细化比较，最小量更新，最后反映到真实DOM</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Vue源码探析——Diff算法的鼻祖snabbdom！]]></title>
         <id>https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-diff-suan-fa-de-bi-zu-snabbdom/</id>
@@ -115,6 +126,13 @@
 ]]></summary>
         <content type="html"><![CDATA[<p>CSS常用的代码片段</p>
 ]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[壁纸专栏]]></title>
+        <id>https://cyj20142932.github.io/post/bi-zhi-zhuan-lan/</id>
+        <link href="https://cyj20142932.github.io/post/bi-zhi-zhuan-lan/">
+        </link>
+        <updated>2020-01-01T14:09:09.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[实用JavaScript库合集！]]></title>
