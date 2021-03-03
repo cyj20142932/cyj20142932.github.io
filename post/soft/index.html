@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Vue源码探析——mustache之扫描器Scanner的主要功能原理！ | Moon博客专栏</title>
+<title>软件下载 | Moon博客专栏</title>
 <meta name="description" content="温故而知新" />
 <link rel="shortcut icon" href="https://cyj20142932.github.io/favicon.ico">
 <link rel="stylesheet" href="https://cyj20142932.github.io/styles/main.css">
@@ -15,11 +15,10 @@
 <script src="https://cyj20142932.github.io/media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://cyj20142932.github.io/media/js/functions.js"></script>
     <meta name="referrer" content="never">
-    <meta name="description" content="在mustache的源码中，有一个Scanner类，主要负责字符串的扫描并记录操作，是底层模板字符串转换为tokens的一个重要步骤！
-
-示例模板字符串
-&lt;h1&gt;我买了一个{{thing}}，好{{mood}}啊！&lt;/h1..." />
-    <meta name="keywords" content="" />
+    <meta name="description" content="1、AnLink投屏控制软件
+https://cyjcoder.lanzous.com/iHTk9mfxt2b
+" />
+    <meta name="keywords" content="软件推荐" />
     <script src="https://cyj20142932.github.io/media/js/waterfall.min.js"></script>
     <script src="https://cyj20142932.github.io/media/js/prism.min.js"></script>
   </head>
@@ -98,16 +97,18 @@
       <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
 
         <div class="center content">
-          <div class="featured-image cover" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-mustache-zhi-sao-miao-qi-scanner-de-zhu-yao-zuo-yong.png');">
+          <div class="featured-image cover" style="background-image: url('https://cyj20142932.github.io/post-images/soft.jpg');">
             <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2021-02-02"><i class="fa fa-calendar"></i><span class="lately">1 个月前</span></time>
+              <time class="meta-info" style="float:left;" datetime="2020-01-01"><i class="fa fa-calendar"></i><span class="lately">1 年前</span></time>
               
             </div>
             <div class="info">
               <div class="tags ">
                 
+                      <a href="https://cyj20142932.github.io/tag/ruan-jian-tui-jian/" class="ctag ctag-0 ctag-ruan-jian-tui-jian" aria-label="">软件推荐</a>
+                    
               </div>
-              <h1 class="title ularge white bold">Vue源码探析——mustache之扫描器Scanner的主要功能原理！</h1>
+              <h1 class="title ularge white bold">软件下载</h1>
             </div>
           </div>
         </div>  
@@ -117,109 +118,8 @@
             <article class="main-article post">
               <section class="post-content">
                 <div class="text">
-                  <p>在mustache的源码中，有一个Scanner类，主要负责字符串的扫描并记录操作，是底层模板字符串转换为tokens的一个重要步骤！</p>
-<!-- more -->
-<h2 id="示例模板字符串">示例模板字符串</h2>
-<pre><code class="language-html">&lt;h1&gt;我买了一个{{thing}}，好{{mood}}啊！&lt;/h1&gt;
-</code></pre>
-<p>Scanner主要是两个功能，扫描模板字符串直到遇见指定的字符（比如我们的{{或者}}），然后当遇到指定字符的时候则扫描的指针需要跳过指定字符的长度</p>
-<figure data-type="image" tabindex="1"><img src="https://cyj20142932.github.io/post-images/1612274739586.png" alt="" loading="lazy"></figure>
-<p>主要实现</p>
-<h3 id="1-indexhtml">1、index.html</h3>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-
-&lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-    &lt;title&gt;&lt;/title&gt;
-&lt;/head&gt;
-
-&lt;body&gt;
-
-    &lt;div id=&quot;content&quot;&gt;&lt;/div&gt;
-
-    &lt;script src=&quot;./xuni/boundle.js&quot;&gt;&lt;/script&gt;
-    &lt;script&gt;
-        let el = document.getElementById('content');
-        const templateStr = &quot;&lt;h1&gt;我买了一个{{thing}}，好{{mood}}啊！&lt;h1&gt;&quot;;
-        const data = {
-            thing: &quot;华为手机&quot;,
-            mood: &quot;开心&quot;
-        }
-        const result = moonEngine.render(templateStr, data);
-        el.innerHTML = result;
-    &lt;/script&gt;
-&lt;/body&gt;
-
-&lt;/html&gt;
-</code></pre>
-<h3 id="2-scannerjs">2、Scanner.js</h3>
-<pre><code class="language-js">/**
- * 扫描器类
- */
-
-export class Scanner {
-  constructor(templateStr) {
-    this.templateStr = templateStr;
-    //当前指针位置
-    this.pos = 0;
-    //尾巴字符串，初始化的时候等于模板字符串
-    this.tail = this.templateStr;
-  }
-
-  //路过某些内容，没有返回值
-  scan(tag) {
-    if (this.tail.indexOf(tag) == 0) {
-      //tag有多长，如：‘{{’长度是2
-      this.pos += tag.length;
-      //尾巴也变了
-      this.tail = this.templateStr.substring(this.pos);
-    }
-  }
-
-  //让指针进行扫描，知道遇到指定内容结束，并且能返回结束之前路过的字符
-  scanUntil(stopTag) {
-    //记录开始执行此方法是指针位置
-    const pos_backup = this.pos;
-    //当尾巴开头不是stopTag的时候说明还没有扫描到
-    while (
-      this.tail.indexOf(stopTag) != 0 &amp;&amp;
-      this.pos &lt; this.templateStr.length
-    ) {
-      this.pos++;
-      //改变尾巴
-      this.tail = this.templateStr.substring(this.pos);
-    }
-    return this.templateStr.substring(pos_backup, this.pos);
-  }
-}
-
-</code></pre>
-<h3 id="3-indexjs">3、index.js</h3>
-<pre><code class="language-js">import { Scanner } from &quot;./Scanner.js&quot;;
-
-window.moonEngine = {
-  render(templateStr, data) {
-    var scanner = new Scanner(templateStr);
-    let words = &quot;&quot;;
-    while (scanner.pos != templateStr.length) {
-      words = scanner.scanUntil(&quot;{{&quot;);
-      scanner.scan(&quot;{{&quot;);
-      console.log(scanner.pos);
-      console.log(words);
-
-      words = scanner.scanUntil(&quot;}}&quot;);
-      scanner.scan(&quot;}}&quot;);
-      console.log(scanner.pos);
-      console.log(words);
-    }
-  },
-};
-
-</code></pre>
-<h3 id="4-启动项目yarn-dev-到浏览器查看最终效果">4、启动项目，yarn dev 到浏览器查看最终效果</h3>
-<figure data-type="image" tabindex="2"><img src="https://cyj20142932.github.io/post-images/1612274985132.png" alt="" loading="lazy"></figure>
+                  <p>1、AnLink投屏控制软件<br>
+https://cyjcoder.lanzous.com/iHTk9mfxt2b</p>
 
                 </div>
                 <div class="clear"></div>
@@ -230,11 +130,11 @@ window.moonEngine = {
             <section class="related section">
               
               <article class="prev grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-mo-ban-zi-fu-chuan-zhuan-tokens-suan-fa.png');"></div>
-                 <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-mo-ban-zi-fu-chuan-zhuan-tokens-suan-fa/" class="full-link"></a>
+                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/bi-zhi-zhuan-lan.jpg');"></div>
+                 <a href="https://cyj20142932.github.io/post/bi-zhi-zhuan-lan/" class="full-link"></a>
                  <div class="info">
-                  <time datetime="2021-02-03">2021-02-03</time>
-                  <h4 class="title white no-margin">Vue源码探析——模板字符串转tokens算法！</h4>
+                  <time datetime="2020-01-01">2020-01-01</time>
+                  <h4 class="title white no-margin">壁纸专栏</h4>
                 </div>
                  <span class="epcl-button red">
                   <img src="https://cyj20142932.github.io/media/images/left-arrow.svg" width="15" alt="Left Arrow">
@@ -244,11 +144,11 @@ window.moonEngine = {
               
               
               <article class="next grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/vue-yuan-ma-tan-xi-qian-duan-gong-cheng-hua-da-jian-mastache-kai-fa-huan-jing.jpg');"></div>
-                 <a href="https://cyj20142932.github.io/post/vue-yuan-ma-tan-xi-qian-duan-gong-cheng-hua-da-jian-mastache-kai-fa-huan-jing/" class="full-link"></a>
+                <div class="thumb cover lazy loaded" style="background-image: url('https://cyj20142932.github.io/post-images/shi-yong-javascript-ku-he-ji.jpg');"></div>
+                 <a href="https://cyj20142932.github.io/post/shi-yong-javascript-ku-he-ji/" class="full-link"></a>
                  <div class="info">
-                  <time datetime="2021-01-28">2021-01-28</time>
-                  <h4 class="title white no-margin">Vue源码探析——前端工程化，搭建mastache开发环境！</h4>
+                  <time datetime="2020-01-01">2020-01-01</time>
+                  <h4 class="title white no-margin">实用JavaScript库合集！</h4>
                 </div>
                  <span class="epcl-button red">
                   <img src="https://cyj20142932.github.io/media/images/right-arrow.svg" width="15" alt="Left Arrow">
